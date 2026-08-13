@@ -16,6 +16,8 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   words = passageData.passage.split(/\s+/);
   textFont(dialFont); // tells p5 what font to use moving forward
+  // make an amount of dials equal to the size of the largerst word
+  // set each to A
 }
 
 function draw() {

@@ -27,6 +27,9 @@ class Dial {
     }
 
     display() {
-
+        // draw a letter to the screen
+        // draw 2 letters above
+        // draw 2 letters below
+        // idk if this would work because they have to move. 1
     }
 }
