@@ -32,15 +32,19 @@ class Dial {
   }
 }
 
+let passageData;
+let words;
+const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+let currentWord = 'start';
+let dials = [];
+
+function preload() {
+  passageData = loadJSON("passage.json");
+}
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
-
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-  let currentWord = 0;
-  let dials = [];
-
-  loadfont();
+  words = passageData.passage.toUppercase().split(/\s+/);
 }
 
 function draw() {
