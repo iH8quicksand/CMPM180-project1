@@ -1,55 +1,25 @@
-
-class Dial {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-    this.position = 0;
-    this.target = 0;
-    this.velocity = 0;
-  }
-
-  moveto(character) {
-    // Choose a future target position.
-    const index = characters.indexOf(character);
-    // Add one or more full rotations.
-    this.target =
-      this.position -
-      (this.position % characters.length) +
-      characters.length +
-      index;
-  }
-
-  update() {
-    this.position = lerp(this.position, this.target, 0.12)
-
-    if (abs(this.target - this.position) < 0.001) {
-      this.position = this.target;
-    }
-  }
-
-  display() {
-
-  }
-}
-
 let passageData;
-let words;
-const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-let currentWord = 'start';
-let dials = [];
+let words = [];
+const dials = [];
+let dialFont;
+
+const DIALSPACING = 80;
+const CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const BACKGROUNDCOLOR = 200;
 
 function preload() {
   passageData = loadJSON("passage.json");
+  dialFont = loadFont("assets/Helvetica.ttf")
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  words = passageData.passage.toUppercase().split(/\s+/);
+  words = passageData.passage.split(/\s+/);
+  textFont(dialFont); // tells p5 what font to use moving forward
 }
 
 function draw() {
   background(220);
-  Text('hi', 50, 50);
   for (const dial of dials) {
     dial.update();  // Change position every frame
     dial.display(); // Draw current position
