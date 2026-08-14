@@ -7,7 +7,7 @@ class Dial {
         this.velocity = -1;
     }
 
-    moveto(character) {
+    moveTo(character) {
         // Choose a future target position.
         const index = CHARACTERS.indexOf(character);
         // Add one or more full rotations.
@@ -27,9 +27,25 @@ class Dial {
     }
 
     display() {
-        // draw a letter to the screen
-        // draw 2 letters above
-        // draw 2 letters below
-        // idk if this would work because they have to move. 1
+        const centerIndex = round(this.position);
+
+        for (let offset = -3; offset <= 3; offset++) {
+            const letterPosition = centerIndex + offset;
+
+            // Wrap around from Z back to A.
+            const letterIndex =
+                ((letterPosition % CHARACTERS.length) + CHARACTERS.length)
+                % CHARACTERS.length;
+
+            const letter = CHARACTERS[letterIndex];
+
+            // How far this letter is from the dial's exact center.
+            const distanceFromCenter = letterPosition - this.position;
+
+            const letterY =
+                this.y + distanceFromCenter * 60;
+
+            text(letter, this.x, letterY);
+        }
     }
 }
