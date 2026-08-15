@@ -7,6 +7,8 @@ let maxWordLength = 0;
 const DIALSPACING = 80;
 const CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const BACKGROUNDCOLOR = 200;
+const LEFTPADDING = 400;
+const PAUSELENGTH = 100;
 
 function preload() {
   passageData = loadJSON("passage.json");
@@ -23,35 +25,45 @@ function setup() {
     const currentLength = word.length;
 
     if (currentLength > maxWordLength) {
-      maxwordLength = currentLength;
+      maxWordLength = currentLength;
     }
   }
 
   // make an amount of dials equal to the size of the largerst word
   for (let i = 1; i <= maxWordLength; i++) {
-    const x = 100 + i * DIALSPACING;
+    const x = LEFTPADDING + i * DIALSPACING;
     const y = height / 2;
 
     dials.push(new Dial(x, y));
-    dials[0].moveTo("B");
   }
+
+  // just testing
+  dials[0].moveTo("N");
+  dials[1].moveTo("V");
+  dials[2].moveTo("I");
+  dials[3].moveTo("D");
+  dials[4].moveTo("I");
+  dials[5].moveTo("A");
+
+  setDialsToWord("HELLO")
+
 }
 
 function draw() {
-  background(220);
+  background(BACKGROUNDCOLOR);
   for (const dial of dials) {
     dial.update();  // Change position every frame
     dial.display(); // Draw current position
   }
-  // just testing
-  //text(words, 50, 50);
-  //let i = 80;
-  //for (const j in words) {
-  //  text(words[j], i, 80);
-  //  i += 50;
-  //}
 }
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+}
+
+function setDialsToWord(word) {
+  for (let i = 0; i < word.length; i++) {
+    const character = word[i] ?? " ";
+    dials[i].moveTo(character);
+  }
 }

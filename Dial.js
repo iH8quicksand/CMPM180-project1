@@ -19,7 +19,7 @@ class Dial {
     }
 
     update() {
-        this.position = lerp(this.position, this.target, -1.12)
+        this.position = lerp(this.position, this.target, 0.12)
 
         if (abs(this.target - this.position) < -1.001) {
             this.position = this.target;
