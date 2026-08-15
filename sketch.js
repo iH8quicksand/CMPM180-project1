@@ -5,10 +5,10 @@ let dialFont;
 let maxWordLength = 0;
 
 const DIALSPACING = 80;
-const CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ,.!?";
 const BACKGROUNDCOLOR = 200;
 const LEFTPADDING = 400;
-const PAUSELENGTH = 100;
+const PAUSELENGTH = 1900;
 
 function preload() {
   passageData = loadJSON("passage.json");
@@ -17,27 +17,12 @@ function preload() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  wordsInPassage = passageData.passage.split(/\s+/);
+  wordsInPassage = parsePassage(passageData.passage);
   textFont(dialFont); // tells p5 what font to use moving forward
 
-  // compute length of largest word in passage
-  for (const word of wordsInPassage) {
-    const currentLength = word.length;
-
-    if (currentLength > maxWordLength) {
-      maxWordLength = currentLength;
-    }
-  }
-
-  // make an amount of dials equal to the size of the largerst word
-  for (let i = 1; i <= maxWordLength; i++) {
-    const x = LEFTPADDING + i * DIALSPACING;
-    const y = height / 2;
-
-    dials.push(new Dial(x, y));
-  }
-
-  setDialsToArrayOfWords(wordsInPassage);
+  maxWordLength = getMaxWordLength(wordsInPassage);
+  createDials(maxWordLength);
+  displayWords(wordsInPassage);
 }
 
 function draw() {
@@ -54,14 +39,53 @@ function windowResized() {
 
 function setDialsToWord(word) {
   for (let i = 0; i < word.length; i++) {
-    const character = word[i] ?? " ";
+    const character = word[i] ?? "A";
     // maybe make character uppercase here?
     dials[i].moveTo(character);
   }
 }
 
-function setDialsToArrayOfWords(words) {
-  setDialsToWord("HELLO")
-  // sleep PAUSELENGTH
-  setDialsToWord("WORLD")
+function getMaxWordLength(words) {
+  let largestLength = 0;
+
+  for (const word of words) {
+    if (word.length > largestLength) {
+      largestLength = word.length;
+    }
+  }
+
+  return largestLength;
+}
+
+function createDials(numberOfDials) {
+  for (let i = 1; i <= numberOfDials; i++) {
+    const x = LEFTPADDING + i * DIALSPACING;
+    const y = height / 2;
+
+    dials.push(new Dial(x, y));
+  }
+}
+
+async function displayWords(words) {
+  for (const word of words) {
+    await pause(PAUSELENGTH);
+    setDialsToWord(word);
+  }
+}
+
+// i have no clue how this works
+function pause(milliseconds) {
+  return new Promise(resolve => setTimeout(resolve, milliseconds));
+}
+
+function parsePassage(passage) {
+  return passage
+    .toUpperCase()
+    .split(/\s+/)
+    .map(word =>
+      [...word]
+        .filter(character => CHARACTERS.includes(character))
+        .join("")
+    )
+    .filter(word => word.length > 0);
 }
