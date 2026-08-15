@@ -1,5 +1,5 @@
 let passageData;
-let words = [];
+let wordsInPassage = [];
 const dials = [];
 let dialFont;
 let maxWordLength = 0;
@@ -17,11 +17,11 @@ function preload() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  words = passageData.passage.split(/\s+/);
+  wordsInPassage = passageData.passage.split(/\s+/);
   textFont(dialFont); // tells p5 what font to use moving forward
 
   // compute length of largest word in passage
-  for (const word of words) {
+  for (const word of wordsInPassage) {
     const currentLength = word.length;
 
     if (currentLength > maxWordLength) {
@@ -37,16 +37,7 @@ function setup() {
     dials.push(new Dial(x, y));
   }
 
-  // just testing
-  dials[0].moveTo("N");
-  dials[1].moveTo("V");
-  dials[2].moveTo("I");
-  dials[3].moveTo("D");
-  dials[4].moveTo("I");
-  dials[5].moveTo("A");
-
-  setDialsToWord("HELLO")
-
+  setDialsToArrayOfWords(wordsInPassage);
 }
 
 function draw() {
@@ -64,6 +55,13 @@ function windowResized() {
 function setDialsToWord(word) {
   for (let i = 0; i < word.length; i++) {
     const character = word[i] ?? " ";
+    // maybe make character uppercase here?
     dials[i].moveTo(character);
   }
+}
+
+function setDialsToArrayOfWords(words) {
+  setDialsToWord("HELLO")
+  // sleep PAUSELENGTH
+  setDialsToWord("WORLD")
 }
