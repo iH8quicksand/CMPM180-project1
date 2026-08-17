@@ -26,6 +26,7 @@ class Dial {
         }
     }
 
+    // simple version
     //display() {
     //    const centerIndex = round(this.position);
 
@@ -98,7 +99,7 @@ class Dial {
             scale(1, frontness);
 
             // Dim letters as they move away from the viewer.
-            fill(255, 50 + frontness * 205);
+            fill(0, 50 + frontness * 205);
 
             text(letter, 0, 0);
 

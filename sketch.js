@@ -5,19 +5,24 @@ let dialFont;
 let maxWordLength = 0;
 
 const DIALSPACING = 80;
-const CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ,.!?";
-const BACKGROUNDCOLOR = 200;
-const LEFTPADDING = 400;
-const PAUSELENGTH = 1900;
+const CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.;:!?";
+const BACKGROUNDCOLOR = 210;
+const LEFTPADDING = 200;
+const PAUSELENGTH = 1700;
+
+
 
 function preload() {
-  passageData = loadJSON("passage.json");
+  passageData = loadStrings("passage.txt");
   dialFont = loadFont("assets/Helvetica.ttf")
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  wordsInPassage = parsePassage(passageData.passage);
+  wordsInPassage = parsePassage(passageData.join("\n"));
+
+  logPassageDuration(wordsInPassage);
+
   textFont(dialFont); // tells p5 what font to use moving forward
 
   maxWordLength = getMaxWordLength(wordsInPassage);
@@ -32,6 +37,8 @@ function draw() {
     dial.display(); // Draw current position
   }
 }
+
+
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
@@ -88,4 +95,13 @@ function parsePassage(passage) {
         .join("")
     )
     .filter(word => word.length > 0);
+}
+
+function logPassageDuration(words) {
+  const totalSeconds = Math.round(words.length * PAUSELENGTH / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  console.log(
+    `The whole passage will take ${minutes} minute(s) and ${seconds} second(s) to play.`
+  );
 }
