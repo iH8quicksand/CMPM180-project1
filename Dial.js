@@ -60,7 +60,7 @@ class Dial {
         push();
 
         textAlign(CENTER, CENTER);
-        textSize(64);
+        textSize(64 * dialScale);
 
         for (
             let offset = -visibleLetters;

@@ -3,11 +3,11 @@ let wordsInPassage = [];
 const dials = [];
 let dialFont;
 let maxWordLength = 0;
+let dialScale = 1;
 
 const DIALSPACING = 80;
-const CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.;:!?";
+const CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.:!?";
 const BACKGROUNDCOLOR = 210;
-const LEFTPADDING = 200;
 const PAUSELENGTH = 1700;
 
 
@@ -42,6 +42,7 @@ function draw() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  layoutDials();
 }
 
 function setDialsToWord(word) {
@@ -65,12 +66,23 @@ function getMaxWordLength(words) {
 }
 
 function createDials(numberOfDials) {
-  for (let i = 1; i <= numberOfDials; i++) {
-    const x = LEFTPADDING + i * DIALSPACING;
-    const y = height / 2;
-
-    dials.push(new Dial(x, y));
+  for (let i = 0; i < numberOfDials; i++) {
+    dials.push(new Dial(0, 0));
   }
+
+  layoutDials();
+}
+
+function layoutDials() {
+  const rowWidth = (dials.length - 1) * DIALSPACING + 64;
+  dialScale = min(1, (width - 24) / rowWidth);
+  const spacing = DIALSPACING * dialScale;
+  const startX = (width - (dials.length - 1) * spacing) / 2;
+
+  dials.forEach((dial, i) => {
+    dial.x = startX + i * spacing;
+    dial.y = height / 2;
+  });
 }
 
 async function displayWords(words) {
