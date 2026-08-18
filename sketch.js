@@ -2,7 +2,6 @@ let passageData;
 let wordsInPassage = [];
 const dials = [];
 let dialFont;
-let maxWordLength = 0;
 let dialScale = 1;
 
 const DIALSPACING = 80;
@@ -25,8 +24,8 @@ function setup() {
 
   textFont(dialFont); // tells p5 what font to use moving forward
 
-  maxWordLength = getMaxWordLength(wordsInPassage);
-  createDials(maxWordLength);
+  // create an amount of dials equal to the length of the largest word
+  createDials(getMaxWordLength(wordsInPassage));
   displayWords(wordsInPassage);
 }
 
@@ -86,14 +85,15 @@ function layoutDials() {
 }
 
 async function displayWords(words) {
+  await pause(PAUSELENGTH); // just to give them time before it starts
   for (const word of words) {
     await pause(PAUSELENGTH);
     setDialsToWord(word);
   }
 }
 
-// i have no clue how this works
 function pause(milliseconds) {
+  // i have no clue how this works
   return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 

@@ -2,8 +2,8 @@ class Dial {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.position = 0;
-        this.target = 0;
+        this.position = -1;
+        this.target = -1;
         this.velocity = -1;
     }
 
